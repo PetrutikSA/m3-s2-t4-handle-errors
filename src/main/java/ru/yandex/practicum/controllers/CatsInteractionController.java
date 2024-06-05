@@ -1,10 +1,8 @@
 package ru.yandex.practicum.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -27,5 +25,17 @@ public class CatsInteractionController {
     @GetMapping("/happiness")
     public Map<String, Integer> happiness() {
         return Map.of("happiness", happiness);
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
+    public Map<String, String> handleIncorrectCount (RuntimeException e) {
+        return Map.of("error", "Ошибка с параметром count.",
+                "errorMessage", e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    public Map<String, String> handleRunTimeException (RuntimeException e) {
+        return Map.of("error", "Произошла ошибка");
     }
 }
